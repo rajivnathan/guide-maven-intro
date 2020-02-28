@@ -15,6 +15,13 @@
     <!-- end::packaging[] -->
     <version>1.0-SNAPSHOT</version>
     
+     
+    <parent>
+        <groupId>io.openliberty.tools</groupId>
+        <artifactId>liberty-maven-app-parent</artifactId>
+  		<version>3.2</version>
+    </parent>
+    
     <!-- tag::properties[] -->
     <properties>
         <!-- tag::encoding[] -->
@@ -27,7 +34,7 @@
         <!-- end::java-version[] -->
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <!-- Plugin versions -->
-        <version.liberty-maven-plugin>3.1</version.liberty-maven-plugin>
+        <version.liberty-maven-plugin>3.2</version.liberty-maven-plugin>
         <version.maven-failsafe-plugin>2.22.2</version.maven-failsafe-plugin>
         <version.maven-war-plugin>3.2.3</version.maven-war-plugin>
         <!-- Liberty configuration -->
@@ -36,6 +43,7 @@
         <!-- end::default-http-port[] -->
         <liberty.var.default.https.port>9443</liberty.var.default.https.port>
         <liberty.var.app.context.root>${project.artifactId}</liberty.var.app.context.root>
+        <packaging.type>minify,runnable</packaging.type>
     </properties>
     <!-- end::properties[] -->
 
@@ -98,8 +106,17 @@
                 <version>${version.liberty-maven-plugin}</version>
                 <!-- tag::configuration[] -->
                 <configuration>
+                	<assemblyArtifact>
+                        <groupId>com.ibm.websphere.appserver.runtime</groupId>
+                        <artifactId>wlp-webProfile7</artifactId>
+                        <version>20.0.0.2</version>
+                        <type>zip</type>
+                    </assemblyArtifact>
                     <!-- tag::serverName[] -->
                     <serverName>guideServer</serverName>
+                    <configFile>src/main/liberty/config/server.xml</configFile>
+                    <include>${packaging.type}</include>
+                    <looseApplication>false</looseApplication>
                     <!-- end::serverName[] -->
                 </configuration>
                 <!-- end::configuration[] -->
